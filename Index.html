@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title> Locadora de Veículos</title>
+
+    <style>
+        /* ======== ESTILO GERAL DO SITE ======== */
+        body {
+            font-family: Arial, sans-serif; /* Fonte padrão */
+            background: linear-gradient(135deg, #42d34e, #04b304); /* Fundo com gradiente */
+            color: #101010; /* Cor do texto */
+            display: flex; /* Centraliza conteúdo */
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        /* ======== CONTAINER DO FORMULÁRIO ======== */
+        .container {
+            background: rgba(255, 255, 255, 0.1); /* Fundo transparente */
+            padding: 25px;
+            border-radius: 15px; /* Bordas arredondadas */
+            box-shadow: 0 0 15px rgba(249, 247, 247, 0.3); /* Sombra suave */
+            width: 100%;
+            max-width: 500px; /* Largura máxima */
+        }
+
+        h1, h2 {
+            text-align: center; /* Centraliza títulos */
+        }
+
+        /* ======== FORMULÁRIO ======== */
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px; /* Espaço entre os campos */
+        }
+
+        label {
+            font-weight: bold; /* Texto destacado */
+        }
+
+        input, select, button {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+
+        input, select {
+            background: #fff; /* Fundo branco */
+            color: #000;
+        }
+
+        /* ======== BOTÃO ======== */
+        button {
+            background-color: #ffb703; /* Laranja */
+            color: #000;
+            cursor: pointer; /* Cursor de clique */
+            font-weight: bold;
+        }
+
+        button:hover {
+            background-color: #ffd166; /* Laranja mais claro no hover */
+        }
+
+        /* ======== LISTA DE AGENDAMENTOS ======== */
+        ul {
+            list-style-type: none; /* Remove marcadores */
+            padding: 0;
+        }
+
+        li {
+            background: rgba(255,255,255,0.15);
+            padding: 10px;
+            margin-top: 8px;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🚘 Locadora de Veículos</h1>
+
+        <!-- FORMULÁRIO DE AGENDAMENTO -->
+        <form id="formAgendamento">
+
+            <!-- Campo de nome do cliente -->
+            <label>Nome do Cliente:</label>
+            <input type="text" id="nome" required>
+
+            <!-- Seleção do modelo do carro -->
+            <label>Modelo do Carro:</label>
+            <select id="carro" required>
+                <option value="">Selecione o carro</option>
+                <option value="Gol">Gol</option>
+                <option value="Onix">Onix</option>
+                <option value="Civic">Civic</option>
+                <option value="Nivus">Nivus</option>
+                <option value="Polo">Polo</option>
+            </select>
+
+            <!-- Data da retirada -->
+            <label>Data de Retirada:</label>
+            <input type="date" id="data" required>
+
+            <!-- Hora da retirada -->
+            <label>Hora:</label>
+            <input type="time" id="hora" required>
+
+            <!-- Botão que chama a função agendar() -->
+            <button type="button" onclick="agendar()">Agendar</button>
+        </form>
+
+        <!-- Título da lista -->
+        <h2>📋 Agendamentos</h2>
+
+        <!-- Lista onde os agendamentos aparecerão -->
+        <ul id="listaAgendamentos"></ul>
+    </div>
+
+    <script>
+        // Array onde todos os agendamentos serão armazenados
+        const agendamentos = [];
+
+        /**
+         * Função que captura os dados do formulário,
+         * valida e adiciona ao array de agendamentos.
+         */
+        function agendar() {
+            // Pega os valores dos campos
+            const nome = document.getElementById("nome").value;
+            const carro = document.getElementById("carro").value;
+            const data = document.getElementById("data").value;
+            const hora = document.getElementById("hora").value;
+
+            // Verificação simples: impede que campos vazios sejam enviados
+            if (!nome || !carro || !data || !hora) {
+                alert("⚠️ Preencha todos os campos!");
+                return;
+            }
+
+            // Adiciona o agendamento ao array
+            agendamentos.push({ nome, carro, data, hora });
+
+            // Atualiza a lista exibida na tela
+            atualizarLista();
+
+            // Limpa os campos do formulário
+            document.getElementById("formAgendamento").reset();
+        }
+
+        /**
+         * Atualiza a lista de agendamentos na tela.
+         * Cada item é mostrado dentro de um <li>.
+         */
+        function atualizarLista() {
+            const lista = document.getElementById("listaAgendamentos");
+
+            // Limpa a lista antes de redesenhar
+            lista.innerHTML = "";
+
+            // Percorre todos os agendamentos e cria um <li> para cada um
+            agendamentos.forEach((a, i) => {
+                const item = document.createElement("li");
+
+                // Conteúdo do item da lista
+                item.textContent =
+                    `${i + 1}. 👤 ${a.nome} | 🚗 ${a.carro} | 📅 ${a.data} | ⏰ ${a.hora}`;
+
+                // Adiciona na lista
+                lista.appendChild(item);
+            });
+        }
+    </script>
+</body>
+</html>
